@@ -1,8 +1,3 @@
-'''
-Created on Feb 4, 2017
-
-@author: eric
-'''
 from turtle import *
 #import turtle
 import math
