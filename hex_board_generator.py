@@ -1,5 +1,4 @@
 from turtle import *
-#import turtle
 import math
 import random
 import os
@@ -10,20 +9,18 @@ def SETUP():
     global turtle
     turtle = Turtle()
     global wid
-    wid = 800
+    wid = 500
 
     global side
     side = wid / ((size*2)+(size-1))
-#side = 20
 
     global h
     h = (side*math.sqrt(3))/2
 
     global hig
-    hig = 2*h*((size*2)-1)
+    hig = wid*(math.sqrt(3))
 
     setup(width=wid, height=hig, startx=600, starty=0)
-#setup(width=1024, height=800, startx=600, starty=100)
     turtle.speed(0)
 
     global colors
@@ -152,57 +149,75 @@ def k6():
     session.append("d")
 
 def k7():
+    turtle.up()
+    turtle.setx(0)
+    turtle.sety(0)
+    turtle.down()
     turtle.speed(3)
     global q
     if q == True:
         q = False
-        print "Miota nim jak szatan!"
+        print "Ale urwal!"
     else:
         turtle.speed(0)
         q = True
-        print "Ale urwal!"
+        print "Miota nim jak szatan!"
 
     while q == True:
         z = random.choice([60, -60, 120, -120, 180])
         turtle.right(z)
         turtle.forward(h*2)
 
-def k8():
+def save():
     x = 0
     global session
-##    while True:
-##        mapName = "map"+str(x)
-##        try:
-##            with open(mapName):
-##                f = open(mapName, "w")
-##                print "OO"
-##                break
-##        except IOError:
-##            print 'KK'
-##            x += 1
     while True:
         mapName = "map"+str(x)
-        print "1"
-        if os.path.exists(mapName) == True:
+        if os.path.exists(mapName) == False:
             f = open(mapName, "w")
-            print "2"
             break
         x += 1
-    print "3"
-    for i in session:
-        print "4"
+    for i in range(len(session)):
         f.write(session[i])
-        print "5"
-    print "6"
     f.close()
     
-    
+def load():
+    global session
+    session = []
+    mapName = raw_input(str("Podaj nazwe mapy: "))
+    f = open(mapName, "r")
+    g = f.read()
+    for i in range(len(g)):
+        session.append(g[i])
+    f.close()
 
-##def k9():
-##    clearscreen()
-##    resetscreen()
-##    setup()
-##    MAIN()
+    for i in range(len(g)):
+        if g[i] == "f":
+            turtle.forward(h*2)
+        elif g[i] == "b":
+            turtle.back(h*2)
+        elif g[i] == "r":
+            turtle.right(60)
+        elif g[i] == "l":
+            turtle.left(60)
+        elif g[i] == "u":
+            turtle.up()
+        elif g[i] == "d":
+            turtle.down()
+
+def resett():
+    turtle.reset()
+    turtle.speed(0)
+    MAIN()
+
+def clearr():
+    turtle.clear()
+
+def k9():
+    turtle.clearscreen()
+
+def k10():
+    turtle.resetscreen()
     
 
 onkey(k1, "Up")
@@ -213,8 +228,10 @@ onkey(k5, "a")
 onkey(k6, "z")
 onkey(k7, "p")
 onkey(bye, "e")
-onkey(k8, "s")
-##onkey(k9, "r")
+onkey(save, "s")
+onkey(load, "l")
+onkey(resett, "r")
+onkey(clearr, "t")
 
 listen()
 mainloop()
