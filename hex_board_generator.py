@@ -1,3 +1,4 @@
+# -*- coding: cp1250 -*-
 from turtle import *
 import math
 import random
@@ -9,7 +10,7 @@ def SETUP():
     global turtle
     turtle = Turtle()
     global wid
-    wid = 500
+    wid = int(raw_input("Podaj szerokosc obrazu: "))
 
     global side
     side = wid / ((size*2)+(size-1))
@@ -18,7 +19,7 @@ def SETUP():
     h = (side*math.sqrt(3))/2
 
     global hig
-    hig = wid*(math.sqrt(3))
+    hig = (size+(size-1))*h*2
 
     setup(width=wid, height=hig, startx=600, starty=0)
     turtle.speed(0)
@@ -114,12 +115,13 @@ def MAIN():
     turtle.width(3)
     turtle.color("#000000")
     turtle.showturtle()
+    global session
+    session = []
 
 MAIN()
 
 ######## KEYBOARD CONTROL ########
 
-session = []
 
 
 def k1():
@@ -171,40 +173,53 @@ def k7():
 def save():
     x = 0
     global session
+    global size
     while True:
-        mapName = "map"+str(x)
+        mapName = "map"+str(x)+".txt"
         if os.path.exists(mapName) == False:
             f = open(mapName, "w")
             break
         x += 1
+    f.write(str(size) + "\n")
     for i in range(len(session)):
         f.write(session[i])
     f.close()
     
 def load():
-    global session
-    session = []
-    mapName = raw_input(str("Podaj nazwe mapy: "))
-    f = open(mapName, "r")
-    g = f.read()
-    for i in range(len(g)):
-        session.append(g[i])
-    f.close()
+    def loadd():
+        global session
+        mapName = raw_input(str("Podaj nazwe mapy: "))
+        f = open(mapName+".txt", "r")
+        g = f.readline()
+        if int(g) != size:
+            print "Ta mapa jest przeznaczona dla rozmiaru", g
+            print "Sprobuj jeszcze raz!"
+            return
+        g = f.readline()
+        for i in range(len(g)):
+            session.append(g[i])
+        f.close()
 
-    for i in range(len(g)):
-        if g[i] == "f":
-            turtle.forward(h*2)
-        elif g[i] == "b":
-            turtle.back(h*2)
-        elif g[i] == "r":
-            turtle.right(60)
-        elif g[i] == "l":
-            turtle.left(60)
-        elif g[i] == "u":
-            turtle.up()
-        elif g[i] == "d":
-            turtle.down()
+        for i in range(len(g)):
+            if g[i] == "f":
+                turtle.forward(h*2)
+            elif g[i] == "b":
+                turtle.back(h*2)
+            elif g[i] == "r":
+                turtle.right(60)
+            elif g[i] == "l":
+                turtle.left(60)
+            elif g[i] == "u":
+                turtle.up()
+            elif g[i] == "d":
+                turtle.down()
 
+    if session == []:
+        loadd()
+    else:
+        resett()
+        loadd()
+        
 def resett():
     turtle.reset()
     turtle.speed(0)
