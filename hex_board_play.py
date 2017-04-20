@@ -137,8 +137,27 @@ for i in range(len(g)):
 
 f.close()
 
-## # ##
+constructor.hideturtle()
 
+## THE GAME ##
+
+K6 = [1, 2, 3, 4, 5, 6]
+K4 = [1, 2, 3, 4]
+K3 = [1, 2, 3]
+K62 = [1, 1, 1, 2, 2, 3]
+K63 = [1, 2, 2, 3, 3, 4]
+
+dices = [K6, K4, K3, K62, K63]
+
+def dice(k):
+    return random.choice(k)
+
+print "Ktora koscia bedziemy rzucac?:"
+for i in dices:
+    print i
+    
+mainDice = dices[(raw_input())]
+        
 onkey(bye, "e")
 
 listen()

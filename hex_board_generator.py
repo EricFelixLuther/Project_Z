@@ -7,8 +7,8 @@ import os
 def SETUP():
     global size
     size = int(raw_input("Wielkosc planszy: "))
-    global turtle
-    turtle = Turtle()
+    global constructor
+    constructor = Turtle()
     global wid
     wid = int(raw_input("Podaj szerokosc obrazu: "))
 
@@ -22,7 +22,6 @@ def SETUP():
     hig = (size+(size-1))*h*2
 
     setup(width=wid, height=hig, startx=600, starty=0)
-    turtle.speed(0)
 
     global colors
     colors = ["green", "red", "blue", "yellow", "#8888ff", "orange"]
@@ -35,53 +34,53 @@ SETUP()
 ######### BOARD CREATION #########
 
 def hexx(n):
-    turtle.left(120)
-    turtle.up()
-    turtle.forward(n)
-    turtle.down()
-    turtle.right(120)
+    constructor.left(120)
+    constructor.up()
+    constructor.forward(n)
+    constructor.down()
+    constructor.right(120)
     for i in range(6):
-        turtle.forward(n)
-        turtle.right(60)
-    turtle.up()
-    turtle.right(60)
-    turtle.forward(n)
-    turtle.left(60)
-    turtle.down()
+        constructor.forward(n)
+        constructor.right(60)
+    constructor.up()
+    constructor.right(60)
+    constructor.forward(n)
+    constructor.left(60)
+    constructor.down()
 
 def jumpNext(n):
-    turtle.up()
-    turtle.forward(n)
-    turtle.right(60)
-    turtle.forward(n)
-    turtle.left(60)
-    turtle.down()
+    constructor.up()
+    constructor.forward(n)
+    constructor.right(60)
+    constructor.forward(n)
+    constructor.left(60)
+    constructor.down()
 
 def jumpBackRow(n):
-    turtle.up()
-    turtle.right(120)
-    turtle.forward(n)
-    turtle.right(60)
-    turtle.forward(n)
-    turtle.left(180)
-    turtle.down()
+    constructor.up()
+    constructor.right(120)
+    constructor.forward(n)
+    constructor.right(60)
+    constructor.forward(n)
+    constructor.left(180)
+    constructor.down()
 
 def jumpTop(n, jumps):
-    turtle.left(60)
-    turtle.up()
+    constructor.left(60)
+    constructor.up()
     for i in range(jumps):
-        turtle.forward(side)
-        turtle.left(60)
-        turtle.forward(side)
-        turtle.right(60)
-    turtle.down()
-    turtle.right(60)
+        constructor.forward(side)
+        constructor.left(60)
+        constructor.forward(side)
+        constructor.right(60)
+    constructor.down()
+    constructor.right(60)
 
 def board(boardSize, side):
     if boardSize == 1:
-        turtle.fill(True)
+        constructor.fill(True)
         hexx(side)
-        turtle.fill(False)
+        constructor.fill(False)
     else:
         jumpNext(side)
         for o in range(6):
@@ -90,31 +89,32 @@ def board(boardSize, side):
             else:
                 currentColor = colors[o]
             for i in range(boardSize-1):
-                turtle.fillcolor(currentColor)
-                turtle.fill(True)
+                constructor.fillcolor(currentColor)
+                constructor.fill(True)
                 hexx(side)
-                turtle.fill(False)
+                constructor.fill(False)
                 if i != max(range(boardSize-1)):
                     jumpNext(side)
-            turtle.right(60)
+            constructor.right(60)
             jumpNext(side)
         jumpBackRow(side)
         board(boardSize - 1, side)
     return
 
 def MAIN():
-    turtle.setx(0)
-    turtle.sety(0)
-    turtle.width(1)
-    turtle.hideturtle()
+    constructor.setx(0)
+    constructor.sety(0)
+    constructor.width(1)
+    constructor.speed(0)
+    constructor.hideturtle()
     jumpTop(side, size-1)
     board(size, side)
     jumpTop(side, size-1)
     jumpNext(side)
-    turtle.right(30)
-    turtle.width(3)
-    turtle.color("#000000")
-    turtle.showturtle()
+    constructor.right(30)
+    constructor.width(3)
+    constructor.color("#000000")
+    constructor.showturtle()
     global session
     session = []
 
@@ -125,50 +125,55 @@ MAIN()
 
 
 def k1():
-    turtle.forward(h*2)
+    constructor.forward(h*2)
     session.append("f")
 
 def k2():
-    turtle.left(60)
+    constructor.left(60)
     session.append("l")
 
 def k3():
-    turtle.right(60)
+    constructor.right(60)
     session.append("r")
 
 def k4():
-    turtle.back(h*2)
+    constructor.back(h*2)
     session.append("b")
 
 def k5():
-    turtle.up()
-    turtle.color("#dddddd")
+    constructor.up()
+    constructor.color("#dddddd")
     session.append("u")
 
 def k6():
-    turtle.down()
-    turtle.color("#000000")
+    constructor.down()
+    constructor.color("#000000")
     session.append("d")
 
 def k7():
-    turtle.up()
-    turtle.setx(0)
-    turtle.sety(0)
-    turtle.down()
-    turtle.speed(3)
+    def toStart():
+        constructor.up()
+        constructor.setx(0)
+        constructor.sety(0)
+        constructor.down()
     global q
     if q == True:
+        toStart()
         q = False
         print "Ale urwal!"
+        constructor.speed(0)
     else:
-        turtle.speed(0)
+        toStart()
+        constructor.speed(4)
         q = True
         print "Miota nim jak szatan!"
 
     while q == True:
         z = random.choice([60, -60, 120, -120, 180])
-        turtle.right(z)
-        turtle.forward(h*2)
+        constructor.right(z)
+        constructor.forward(h*2)
+
+    toStart()
 
 def save():
     x = 0
@@ -202,17 +207,17 @@ def load():
 
         for i in range(len(g)):
             if g[i] == "f":
-                turtle.forward(h*2)
+                constructor.forward(h*2)
             elif g[i] == "b":
-                turtle.back(h*2)
+                constructor.back(h*2)
             elif g[i] == "r":
-                turtle.right(60)
+                constructor.right(60)
             elif g[i] == "l":
-                turtle.left(60)
+                constructor.left(60)
             elif g[i] == "u":
-                turtle.up()
+                constructor.up()
             elif g[i] == "d":
-                turtle.down()
+                constructor.down()
 
     if session == []:
         loadd()
@@ -221,19 +226,26 @@ def load():
         loadd()
         
 def resett():
-    turtle.reset()
-    turtle.speed(0)
+    constructor.reset()
+    global size
+    question = raw_input("Zmieniæ rozmiar mapy? T/N? ")
+    if question == "T" or question == "t":
+        size = int(raw_input("Wielkosc planszy: "))
     MAIN()
 
 def clearr():
-    turtle.clear()
+    constructor.clear()
 
-def k9():
-    turtle.clearscreen()
-
-def k10():
-    turtle.resetscreen()
-    
+print "Klawisze:"
+print "Strzalki - poruszaj wskaznikiem"
+print "A - podnies wskaznik"
+print "Z - upusc wskaznik"
+print "P - pozwol aby wskaznik zostal opentany przez nieczyste moce"
+print "E - exit"
+print "S - save / zapisz"
+print "L - load / zaladuj"
+print "R - reset calej mapy"
+print "T - wyczysc"
 
 onkey(k1, "Up")
 onkey(k2, "Left")
