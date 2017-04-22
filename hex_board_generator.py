@@ -10,8 +10,7 @@ def SETUP():
     global constructor
     constructor = Turtle()
     global wid
-    wid = 200
-    #wid = int(raw_input("Podaj szerokosc obrazu: "))
+    wid = int(raw_input("Podaj szerokosc obrazu: "))
 
     global side
     side = wid / ((size*2)+(size-1))
@@ -26,7 +25,7 @@ def SETUP():
 
     global colors
     colors = ["green", "red", "blue", "yellow", "#8888ff", "orange"]
-    #colors = ["white", "white", "white", "white", "white", "white"]
+    white_colors = ["white", "white", "white", "white", "white", "white"]
 
 
     global q
@@ -120,8 +119,6 @@ MAIN()
 
 ######## KEYBOARD CONTROL ########
 
-
-
 def k1():
     constructor.forward(h*2)
     session.append("f")
@@ -187,7 +184,7 @@ def save():
     for i in range(len(session)):
         f.write(session[i])
     f.close()
-    
+
 def load():
     def loadd():
         global session
@@ -222,7 +219,7 @@ def load():
     else:
         resett()
         loadd()
-        
+
 def resett():
     constructor.reset()
     global size
