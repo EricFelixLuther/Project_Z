@@ -10,7 +10,8 @@ def SETUP():
     global constructor
     constructor = Turtle()
     global wid
-    wid = int(raw_input("Podaj szerokosc obrazu: "))
+    wid = 200
+    #wid = int(raw_input("Podaj szerokosc obrazu: "))
 
     global side
     side = wid / ((size*2)+(size-1))
@@ -21,10 +22,12 @@ def SETUP():
     global hig
     hig = (size+(size-1))*h*2
 
-    setup(width=wid, height=hig, startx=600, starty=0)
+    setup(width=wid+50, height=hig+50, startx=600, starty=0)
 
     global colors
     colors = ["green", "red", "blue", "yellow", "#8888ff", "orange"]
+    #colors = ["white", "white", "white", "white", "white", "white"]
+
 
     global q
     q = False
@@ -34,47 +37,36 @@ SETUP()
 ######### BOARD CREATION #########
 
 def hexx(n):
-    constructor.left(120)
-    constructor.up()
-    constructor.forward(n)
-    constructor.down()
-    constructor.right(120)
     for i in range(6):
         constructor.forward(n)
         constructor.right(60)
-    constructor.up()
-    constructor.right(60)
-    constructor.forward(n)
-    constructor.left(60)
-    constructor.down()
 
 def jumpNext(n):
     constructor.up()
-    constructor.forward(n)
-    constructor.right(60)
-    constructor.forward(n)
-    constructor.left(60)
+    constructor.right(30)
+    constructor.forward(2*h)
+    constructor.left(30)
     constructor.down()
 
 def jumpBackRow(n):
     constructor.up()
-    constructor.right(120)
-    constructor.forward(n)
-    constructor.right(60)
-    constructor.forward(n)
-    constructor.left(180)
+    constructor.right(150)
+    constructor.forward(n*2)
+    constructor.left(150)
     constructor.down()
 
-def jumpTop(n, jumps):
-    constructor.left(60)
+def jumpTop(n, boardSize):
+    constructor.left(90)
     constructor.up()
-    for i in range(jumps):
-        constructor.forward(side)
-        constructor.left(60)
-        constructor.forward(side)
-        constructor.right(60)
+    constructor.forward(h+((boardSize-1)*h*2))
     constructor.down()
+    constructor.right(90)
+
+def jumpSide(n):
+    constructor.up()
     constructor.right(60)
+    constructor.forward(n*2)
+    constructor.down()
 
 def board(boardSize, side):
     if boardSize == 1:
@@ -95,22 +87,28 @@ def board(boardSize, side):
                 constructor.fill(False)
                 if i != max(range(boardSize-1)):
                     jumpNext(side)
-            constructor.right(60)
-            jumpNext(side)
-        jumpBackRow(side)
+            jumpSide(side)
+        jumpBackRow(h)
         board(boardSize - 1, side)
     return
 
 def MAIN():
-    constructor.setx(0)
-    constructor.sety(0)
+    constructor.up()
+    constructor.setx(-h/2)
+    constructor.sety(h*2)
+    constructor.down()
     constructor.width(1)
     constructor.speed(0)
     constructor.hideturtle()
     jumpTop(side, size-1)
     board(size, side)
+    constructor.up()
+    constructor.setx(0)
+    constructor.sety(0)
     jumpTop(side, size-1)
-    jumpNext(side)
+    constructor.up()
+    constructor.forward(1.5*side)
+    constructor.down()
     constructor.right(30)
     constructor.width(3)
     constructor.color("#000000")
